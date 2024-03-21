@@ -3,7 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+from datetime import timedelta
 load_dotenv()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # internal apps 
     'product.apps.ProductConfig',
     'user.apps.UserConfig',
+    'cart.apps.CartConfig',
     # external apps 
     'rest_framework',
     'rest_framework_simplejwt',
@@ -65,8 +66,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
-
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME" : timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME" : timedelta(days=2),
+}
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
