@@ -1,0 +1,5 @@
+/env
+.gitignore
+.git
+db.sqlite3
+/media
