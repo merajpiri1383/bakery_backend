@@ -1,22 +1,6 @@
-import os 
-from pathlib import Path
-from dotenv import load_dotenv
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+import os
 from datetime import timedelta
-load_dotenv()
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t8dk1nodpx_pd*$&t(d#wg_b44-5qzsy%(e&plo=$0r2&=i=mk'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
+from config.config import *
 # Application definition
 
 INSTALLED_APPS = [
@@ -33,6 +17,7 @@ INSTALLED_APPS = [
     # external apps 
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -70,21 +55,19 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME" : timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME" : timedelta(days=2),
 }
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES" : [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ]
+    ],
+    "DEFAULT_SCHEMA_CLASS" : "drf_spectacular.openapi.AutoSchema",
 }
 
+# API Documention
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Bakery API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -126,9 +109,3 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_USE_SSL = True 
-EMAIL_PORT = 465 
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
